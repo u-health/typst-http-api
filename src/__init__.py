@@ -44,6 +44,7 @@ async def build(request: Request, response: Response):
         logger.info(f"successfully build {len(typst_bytes)}")
     except RuntimeError as e:
         response.status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
+        logger.error(f"error: {str(e)}")
         logger.error(f"failed to build {len(typst_bytes)}")
         return CompilationError(reason="Compilation error", content=str(e))
 

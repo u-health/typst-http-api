@@ -1,7 +1,7 @@
 # An example of using standalone Python builds with multistage images.
 
 # First, build the application in the `/app` directory
-FROM ghcr.io/astral-sh/uv:bookworm-slim AS builder
+FROM ghcr.io/astral-sh/uv:trixie-slim AS builder
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
 # Configure the Python directory so it is consistent
@@ -23,7 +23,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
 # Then, use a final image without uv
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
+
+RUN apt-get update && apt-get install ca-certificates -y && update-ca-certificates
 
 # Copy the Python version
 COPY --from=builder --chown=python:python /python /python
@@ -37,6 +39,3 @@ ENV PATH="/app/.venv/bin:$PATH"
 WORKDIR /app
 # Run the FastAPI application by default
 CMD ["uvicorn", "--host", "0.0.0.0", "src:app"]
-
-LABEL ogr.opencontainer.image.url="https://github.com/slashformotion/typst-http-api/pkgs/container/typst-http-api"
-LABEL org.opencontainers.image.licenses="MIT"
