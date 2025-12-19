@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Then, use a final image without uv
 FROM debian:trixie-slim
 
-RUN apt-get update && apt-get install ca-certificates -y && update-ca-certificates
+RUN apt-get update && apt-get install ca-certificates fonts-inter -y && update-ca-certificates
 
 # Copy the Python version
 COPY --from=builder --chown=python:python /python /python
