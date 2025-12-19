@@ -162,3 +162,5 @@ cython_debug/
 .direnv
 .venv
 result.pdf
+
+fonts/*
